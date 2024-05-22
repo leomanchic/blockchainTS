@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "target": "es2016",
+      "module": "commonjs",
+      "rootDir": "./src",
+      "outDir": "./build",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true
+    }
+  }
+//   module: Specifies the module code generation method. Node uses commonjs.
+// target: Specifies the output language level.
+// moduleResolution: This helps the compiler figure out what an import refers to. The value node mimics the Node module resolution mechanism.
+// outDir: This is the location to output .js files after transpilation. In this tutorial, you will save it as dist.
