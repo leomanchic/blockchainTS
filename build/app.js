@@ -10,17 +10,13 @@ const http_1 = __importDefault(require("http"));
 const logging_1 = __importDefault(require("./config/logging"));
 const config_1 = __importDefault(require("./config/config"));
 const routes_1 = __importDefault(require("./routes"));
+const peers_1 = __importDefault(require("./peers"));
 const NAMESPACE = 'Server';
-//get the port from the user or set the default port
-// const HTTP_PORT = process.env.HTTP_PORT || 3001;
-//create a new app
 const app = (0, express_1.default)();
-//use cors middleware
 app.use((0, cors_1.default)({
     origin: '*',
     methods: ['GET', 'POST', 'PUT']
 }));
-//logging the request
 app.use((req, res, next) => {
     logging_1.default.info(NAMESPACE, `METHOD - [${req.method}], URL - [${req.url}], IP -[${req.socket.remoteAddress}]`);
     res.on(`finish`, () => {
@@ -28,12 +24,9 @@ app.use((req, res, next) => {
     });
     next();
 });
-// parse the request
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
-// rules of API
 app.use((req, res, next) => {
-    // remove in production
     res.header('Access-Control-Allow-Origin', '*');
     if (req.method == 'OPTIONS') {
         res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST PUT');
@@ -52,3 +45,5 @@ app.use((req, res, next) => {
 });
 const httpServer = http_1.default.createServer(app);
 httpServer.listen(config_1.default.server.port, () => logging_1.default.info(NAMESPACE, `Server is running ${config_1.default.server.hostname}:${config_1.default.server.port}`));
+const p2pPort = config_1.default.p2p.port; // Example P2P port, you might need to set this in your config
+const p2pServer = new peers_1.default(p2pPort);

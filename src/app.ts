@@ -11,13 +11,9 @@ import P2PServer from './peers';
 
 const NAMESPACE = 'Server';
 
-//get the port from the user or set the default port
-// const HTTP_PORT = process.env.HTTP_PORT || 3001;
 
-//create a new app
 const app = express();
 
-//use cors middleware
 app.use(
     cors({
         origin: '*',
@@ -25,7 +21,6 @@ app.use(
     })
 );
 
-//logging the request
 app.use((req, res, next) => {
     logging.info(NAMESPACE, `METHOD - [${req.method}], URL - [${req.url}], IP -[${req.socket.remoteAddress}]`);
 
@@ -35,13 +30,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// parse the request
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// rules of API
+
 app.use((req, res, next) => {
-    // remove in production
+
     res.header('Access-Control-Allow-Origin', '*');
 
     if (req.method == 'OPTIONS') {
@@ -69,6 +64,3 @@ httpServer.listen(config.server.port, () => logging.info(NAMESPACE, `Server is r
 
 const p2pPort = config.p2p.port; // Example P2P port, you might need to set this in your config
 const p2pServer = new P2PServer(p2pPort);
-        
-// const p2pServer = http.createServer(app);
-// p2pServer.listen(config.p2p.port, () => logging.info(NAMESPACE, `Server p2p is running ${config.p2p.hostname}:${config.p2p.port}`));
